@@ -5,9 +5,8 @@ Cadastro local de pesquisas, fontes públicas e evidências documentais
 Autor: Iraê César Brandão - 17/out/2026
 https://irae-cesar-brandao.github.io/avaliacao_candidatos_eleicao/
 
-<section class="card">
-  <details>
-    <summary style="color: blue;">README — metodologia, cálculos e limites</summary>
+
+Metodologia, cálculos e limites
 
     <h3>Armazenamento local</h3>
     <p>Este arquivo usa o armazenamento local do navegador (<code>localStorage</code>). Os dados permanecem no perfil do navegador, não são automaticamente sincronizados entre dispositivos e podem ser apagados se o usuário limpar os dados do navegador. Não é armazenamento de servidor nem um mecanismo de backup.</p>
@@ -56,6 +55,5 @@ https://irae-cesar-brandao.github.io/avaliacao_candidatos_eleicao/
     <p>Esta declaração esclarece a finalidade do projeto e busca delimitar as responsabilidades relacionadas à utilização do sistema, mas não constitui isenção absoluta de responsabilidade jurídica nem afasta obrigações que sejam impostas pela legislação. A responsabilidade de cada pessoa deverá ser apreciada conforme sua conduta, sua participação e as circunstâncias do caso concreto.</p>
 
     <p>O uso do sistema implica o reconhecimento de seu caráter experimental e de suas limitações metodológicas. Recomenda-se revisão jurídica antes de sua disponibilização pública, especialmente se houver tratamento de dados pessoais, informações sobre pessoas identificáveis ou divulgação pública de análises e avaliações.</p>
-  </details>
-</section>
+
 
