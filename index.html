@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sistema Avaliativo de Candidatos e Pesquisa— Iraê César Brandão</title>
+
+<meta name="description" content="Sistema de avaliação e pesquisa eleitoral de candidatos">	
+    	<meta name="author" content="Iraê César Brandão - Desenvolvedor Luck Way Informática.">
+    	<meta name="keywords" content="candidatos, eleitoral, pesquisa, avaliação, reerencias, evidencias, comparação, testes,                     manipulação de dados. ">
+
+<!-- Arquivo de estilos CSS -->
+                     <link rel="stylesheet" href="style.css">
+<!-- Arquivo de Script JS -->
+                    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.10.3/sql-wasm.js">
+                     <script src="script.js"></script>
+
+</head>
+<body>
+<header>
+
+  <h1 style="color:blue;  border: 2px solid #ffffff;" ><b>Sistema Avaliativo de Candidatos e Pesquisa</b></h1>
+  <p style="color: #0b1d3a;"><b>Cadastro local de pesquisas, fontes públicas e evidências documentais</b></p>
+  <div class="author" style="color: #0b1d3a;">Autor: Iraê César Brandão - 17/out/2026</div>
+</header>
+<main>
+  <section class="card">
+    <details open>
+      <summary>Tutorial de uso</summary>
+      <ol>
+        <li>Cadastre uma pesquisa com nome, país, ano eleitoral, cargo e estado quando aplicável.</li>
+        <li>Registre cada informação separadamente, incluindo a fonte, a data de consulta e o tipo de evidência.</li>
+        <li>Use as notas para resumir o conteúdo encontrado; diferencie fatos documentados, alegações e opinião do pesquisador.</li>
+        <li>Os registros são guardados no armazenamento local deste navegador. Exporte um backup regularmente.</li>
+        <li>O sistema não verifica automaticamente a veracidade das fontes nem envia dados para um servidor.</li>
+      </ol>
+    </details>
+  </section>
+
+  <section class="card">
+    <h2  style="color: blue;">1. Cadastro da pesquisa</h2>
+    <form id="candidateForm">
+      <input type="hidden" id="candidateId">
+      <div class="grid">
+        <div><label for="candidateName">Nome do candidato / pessoa pesquisada *</label><input id="candidateName" required maxlength="180" autocomplete="off"></div>
+        <div><label for="country">País *</label><input id="country" required value="Brasil" maxlength="100"></div>
+        <div><label for="year">Ano da eleição *</label><input id="year" required type="number" min="1800" max="2200" placeholder="Ex.: 2026"></div>
+        <div><label for="office">Cargo político *</label>
+          <select id="office" required>
+            <option value="">Selecione...</option>
+            <option>Presidente da República</option>
+            <option>Governador(a)</option>
+            <option>Senador(a)</option>
+            <option>Deputado(a) Federal</option>
+            <option>Deputado(a) Estadual / Distrital</option>
+            <option>Prefeito(a)</option>
+            <option>Vereador(a)</option>
+            <option>Outro / não aplicável</option>
+          </select>
+        </div>
+        <div><label for="state">Estado (se aplicável)</label><input id="state" maxlength="100" placeholder="Ex.: Minas Gerais"></div>
+        <div><label for="party">Partido (opcional)</label><input id="party" maxlength="100"></div>
+      </div>
+      <div class="actions"><button type="submit">Salvar pesquisa</button><button class="secondary" type="button" id="clearCandidate">Limpar formulário</button></div>
+    </form>
+    <p class="muted">O cadastro organiza a pesquisa. Os indicadores exploratórios só aparecem na comparação e devem ser interpretados com cobertura e limitações.</p>
+  </section>
+
+  <section class="card">
+    <h2  style="color: blue;">2. Protocolo de pesquisa e cobertura</h2>
+    <p class="muted">Registre o que foi investigado separadamente do que foi encontrado. A cobertura é documental, não uma nota de mérito.</p>
+    <form id="researchForm">
+      <div class="grid">
+        <div><label for="rCandidate">Pesquisa/candidato *</label><select id="rCandidate" required><option value="">Cadastre uma pesquisa primeiro</option></select></div>
+        <div><label for="rAxis">Eixo investigado *</label><select id="rAxis" required>
+          <option>Ética institucional</option><option>Transparência e prestação de contas</option><option>Empatia e escuta pública</option><option>Cidadania e participação</option><option>Direitos humanos e bem-estar social</option><option>Conduta institucional e regras democráticas</option><option>Integridade e possíveis irregularidades</option><option>Proteção social e tratamento de grupos vulneráveis</option><option>Constituição e participação popular</option><option>Prioridades orçamentárias e impactos sociais</option><option>Outro</option>
+        </select></div>
+        <div><label for="rStatus">Suficiência da investigação *</label><select id="rStatus" required><option value="sufficient">Suficiente segundo o protocolo</option><option value="partial">Parcial</option><option value="insufficient">Insuficiente</option><option value="not_searched">Não investigado</option></select></div>
+        <div><label for="rPeriod">Período investigado</label><input id="rPeriod" maxlength="120" placeholder="Ex.: 2021–2026"></div>
+        <div><label for="rConsultedAt">Data da consulta *</label><input id="rConsultedAt" type="date" required></div>
+        <div><label for="rQuery">Consulta/estratégia usada *</label><input id="rQuery" required maxlength="1000" placeholder="Termos, bases e critérios usados"></div>
+      </div>
+      <div style="margin-top:.8rem"><label for="rSources">Fontes e tipos de fonte consultados</label><textarea id="rSources" maxlength="2000" placeholder="Ex.: portais oficiais, tribunais, imprensa, estudos independentes"></textarea></div>
+      <div style="margin-top:.8rem"><label for="rReason">Justificativa, lacunas e limitações</label><textarea id="rReason" maxlength="2000" placeholder="Explique consultas adicionais, indisponibilidade de dados ou limitações encontradas."></textarea></div>
+      <div class="actions"><button type="submit">Salvar protocolo</button><button class="secondary" type="button" id="clearResearch">Limpar formulário</button></div>
+    </form>
+    <div id="researchList" class="records" style="margin-top:.8rem"><p class="muted">Nenhum protocolo registrado.</p></div>
+  </section>
+
+  <section class="card">
+    <h2  style="color: blue;">3. Registrar fonte ou evidência</h2>
+    <form id="evidenceForm">
+      <input type="hidden" id="evidenceId">
+      <div class="grid">
+        <div><label for="eCandidate">Pesquisa associada *</label><select id="eCandidate" required><option value="">Cadastre uma pesquisa primeiro</option></select></div>
+        <div><label for="axis">Eixo temático *</label>
+          <select id="axis" required>
+            <optgroup label="Eixos de pesquisa">
+              <option>Ética institucional</option>
+              <option>Transparência e prestação de contas</option>
+              <option>Empatia e escuta pública</option>
+              <option>Cidadania e participação</option>
+              <option>Direitos humanos e bem-estar social</option>
+              <option>Conduta institucional e regras democráticas</option>
+              <option>Integridade e possíveis irregularidades</option>
+              <option>Proteção social e tratamento de grupos vulneráveis</option>
+              <option>Constituição e participação popular</option>
+              <option>Prioridades orçamentárias e impactos sociais</option>
+            </optgroup>
+            <option>Outro</option>
+          </select>
+        </div>
+        <div><label for="evidenceType">Tipo de registro *</label>
+          <select id="evidenceType" required>
+            <option>Documento oficial</option><option>Reportagem / notícia</option><option>Estudo / análise</option>
+            <option>Declaração pública</option><option>Alegação não confirmada</option><option>Opinião / anotação do pesquisador</option><option>Outro</option>
+          </select>
+        </div>
+        <div><label for="consultedAt">Data da consulta *</label><input id="consultedAt" type="date" required></div>
+        <div><label for="sourceTitle">Título ou identificação da fonte *</label><input id="sourceTitle" required maxlength="240"></div>
+        <div><label for="sourceUrl">URL da fonte</label><input id="sourceUrl" type="url" placeholder="https://..."></div>
+      </div>
+      <div style="margin-top:.8rem"><label for="summary">Resumo factual / anotação *</label><textarea id="summary" required maxlength="5000" placeholder="Registre o que a fonte informa. Diferencie fatos, alegações e interpretação."></textarea></div>
+      <div class="grid" style="margin-top:.8rem">
+        <div><label for="polarity">Polaridade *</label><select id="polarity" required><option value="inconclusive">Inconclusiva</option><option value="positive">Positiva</option><option value="negative">Negativa</option><option value="neutral">Neutra</option></select></div>
+        <div><label for="relevance">Relevância (1–5) *</label><select id="relevance" required><option value="1">1 — Muito baixa</option><option value="2">2 — Baixa</option><option value="3" selected>3 — Moderada</option><option value="4">4 — Alta</option><option value="5">5 — Muito alta</option></select></div>
+        <div><label for="reliability">Confiabilidade da comprovação (1–5) *</label><select id="reliability" required><option value="1">1 — Muito baixa</option><option value="2">2 — Baixa</option><option value="3" selected>3 — Moderada</option><option value="4">4 — Alta</option><option value="5">5 — Muito alta</option></select></div>
+        <div><label for="impact">Magnitude do impacto (1–5) *</label><select id="impact" required><option value="1">1 — Muito baixa</option><option value="2">2 — Baixa</option><option value="3" selected>3 — Moderada</option><option value="4">4 — Alta</option><option value="5">5 — Muito alta</option></select></div>
+        <div><label for="relation">Relação com o candidato *</label><select id="relation" required><option value="direct">Direta</option><option value="indirect">Indireta</option><option value="unproven">Não demonstrada</option></select></div>
+        <div><label for="eStatus">Situação da evidência *</label><select id="eStatus" required><option value="confirmed">Confirmada/documentada</option><option value="contested">Contestada</option><option value="investigating">Em apuração</option><option value="refuted">Refutada</option></select></div>
+      </div>
+      <div style="margin-top:.8rem"><label for="counterpoints">Contrapontos e evidências divergentes</label><textarea id="counterpoints" maxlength="2500" placeholder="Registre fontes contrárias ou interpretações alternativas."></textarea></div>
+      <div style="margin-top:.8rem"><label for="independenceKey">Grupo de independência (opcional)</label><input id="independenceKey" maxlength="180" placeholder="Use a mesma chave para notícias que repetem o mesmo fato"></div>
+      <p class="muted">Não classifique a confiabilidade pela polaridade. Alegações contestadas ou em apuração recebem peso reduzido; evidências refutadas ou sem relação demonstrada não entram no balanço numérico.</p>
+      <div style="margin-top:.8rem"><label for="caveat">Limitações, argumento ou verificação pendente</label><textarea id="caveat" maxlength="2500" placeholder="Ex.: falta localizar documento primário; a informação é contestada; argumento ainda incompleto."></textarea></div>
+      <div class="actions"><button type="submit">Salvar registro</button><button class="secondary" type="button" id="clearEvidence">Limpar formulário</button></div>
+    </form>
+  </section>
+
+  <section class="card">
+    <h2  style="color: blue;">4. Pesquisas cadastradas</h2>
+    <div id="candidateList" class="records"><p class="muted">Nenhuma pesquisa cadastrada ainda.</p></div>
+  </section>
+
+  <section class="card">
+    <h2  style="color: blue;">5. Registros de fontes e evidências</h2>
+    <div class="grid">
+      <div><label for="filterCandidate">Filtrar por pesquisa</label><select id="filterCandidate"><option value="">Todas as pesquisas</option></select></div>
+      <div><label for="filterAxis">Filtrar por eixo</label><select id="filterAxis"><option value="">Todos os eixos</option></select></div>
+    </div>
+    <div id="evidenceList" class="records" style="margin-top:.8rem"><p class="muted">Nenhum registro ainda.</p></div>
+  </section>
+
+  <section class="card">
+    <h2  style="color: blue;">6. Comparação e aferição metodológica</h2>
+    <p class="muted">Escolha até três pesquisas para comparar balanço ponderado, cobertura da investigação e confiança documental separadamente. As fórmulas são indicadores exploratórios, não uma verdade objetiva nem recomendação de voto.</p>
+    <div class="grid3">
+      <div><label for="compare1">Pesquisa 1</label><select class="compareSelect" id="compare1"><option value="">Selecione...</option></select></div>
+      <div><label for="compare2">Pesquisa 2</label><select class="compareSelect" id="compare2"><option value="">Selecione...</option></select></div>
+      <div><label for="compare3">Pesquisa 3</label><select class="compareSelect" id="compare3"><option value="">Selecione...</option></select></div>
+    </div>
+    <div class="actions"><button id="compareBtn" type="button">Mostrar comparação</button></div>
+    <div id="comparison" style="margin-top:.8rem"></div>
+    <div id="assessment" style="margin-top:1rem"></div>
+  </section>
+
+  <section class="card">
+    <h2  style="color: blue;">7. Backup e restauração</h2>
+    <p class="muted">Exporte os dados para um arquivo JSON e guarde-o em local seguro. O arquivo exportado poderá conter anotações pessoais.</p>
+    <div class="actions">
+      <button type="button" id="exportBtn">Exportar backup JSON</button>
+      <label class="button" for="importFile">Importar backup JSON</label><input id="importFile" type="file" accept=".json,application/json" hidden>
+      <button type="button" class="danger" id="deleteAll">Apagar todos os dados locais</button>
+    </div>
+    <p id="storageStatus" class="muted" role="status"></p>
+  </section>
+
+  <section class="card">
+    <details>
+      <summary  style="color: blue;">README — metodologia, cálculos e limites</summary>
+      <h3>Armazenamento local</h3>
+      <p>Este arquivo usa o armazenamento local do navegador (<code>localStorage</code>). Os dados permanecem no perfil do navegador, não são automaticamente sincronizados entre dispositivos e podem ser apagados se o usuário limpar os dados do navegador. Não é armazenamento de servidor nem um mecanismo de backup.</p>
+      <h3>Como os dados são organizados</h3>
+      <p>Cada pesquisa recebe um identificador local. Cada fonte ou evidência fica vinculada a uma pesquisa, com eixo temático, tipo de registro, data de consulta, referência, resumo e limitações.</p>
+      <h3>Camadas separadas: pesquisa, evidência e aferição</h3>
+      <p>O protocolo de pesquisa registra eixo, estratégia/consulta, período, fontes, data, suficiência e limitações. O registro de evidência armazena polaridade, relevância, confiabilidade, impacto, relação com a pessoa pesquisada, situação, contrapontos e grupo de independência.</p>
+      <h3>Fórmula exploratória e limites</h3>
+      <p>Para cada evidência elegível, o peso é (relevância/5) × (confiabilidade/5) × (impacto/5) × fator de relação × fator de situação. Relação direta=1; indireta=0,6; não demonstrada=0. Situação confirmada=1; contestada=0,5; em apuração=0,25; refutada=0. Polaridade positiva soma peso e negativa subtrai peso. O indicador de balanço é 5 + 5 × (positivos − negativos)/(positivos + negativos), limitado a 0–10. Sem evidências elegíveis, a nota não é calculada. Esta escala é provisória e exige validação metodológica antes de uso real.</p>
+      <p>A cobertura é a proporção de eixos com protocolo marcado como suficiente; parcial conta como 0,5 e insuficiente/não investigado como 0. A confiança documental é um indicador separado, baseado no peso médio de confiabilidade e no percentual de evidências confirmadas. Nenhum desses indicadores substitui revisão humana independente. O agrupamento de independência ajuda a identificar duplicações, mas não garante detecção automática de notícias repetidas.</p>
+      <h3>Como interpretar os registros</h3>
+      <h3>Como interpretar os registros</h3>
+      <ul>
+        <li>Uma fonte pode estar incompleta, desatualizada ou contestada.</li>
+        <li>Uma alegação não equivale a um fato comprovado; procure documentos primários e decisões definitivas quando aplicável.</li>
+        <li>A quantidade de registros não mede a veracidade, a relevância nem o mérito de uma pessoa.</li>
+        <li>Registre data, cenário, detalhes e limitações para permitir que outra pessoa reavalie a informação.</li>
+      </ul>
+      <h3>Privacidade e segurança</h3>
+      <p>Não há envio de dados pelo código desta página. Ainda assim, outros programas, extensões ou pessoas com acesso ao perfil do dispositivo podem acessar dados locais. Evite guardar informações sensíveis e mantenha backups protegidos.</p>
+    </details>
+  </section>
+
+  <section class="card">
+    <details>
+      <summary  style="color: blue;">Princípios e reflexões finais</summary>
+      <blockquote>“Quando você estabelece que uma alternativa é boa e outra é má, não há justificativa para a escolha de uma mistura. Não há nenhuma justificativa para escolher qualquer parte do que você conhece ser ruim.”</blockquote>
+      <blockquote>“Não existem contradições. Sempre que você achar que está enfrentando uma contradição, verifique suas premissas. Você vai descobrir que uma delas é falsa.”</blockquote>
+      <blockquote>“Você pode ignorar a realidade, mas não pode evitar as consequências de ignorar a realidade.”</blockquote>
+    </details>
+  </section>
+</main>
+
+<!-- SCRIPT JS -  Carrega o JavaScript antes do fechamento do body -->
+ <script src="script.js"></script>
+
+
+</body>
+ <footer>
+        <p  style="text-align:center; font-size: 12px;"> Sobre o projeto (Detalhes)<a href="detalhes.pdf" style="color: blue;" target="_blank">Sobre o Projeto</a></p>
+       <p  style="text-align:center; font-size: 12px;"> © 2026 — Iraê César Brandão (Dev)  (Page for academic purposes.) — <a href="license.html" style="color: blue;" target="_blank">Licença Acadêmica (AREUL)</a></p>
+  </footer>
+</html>
